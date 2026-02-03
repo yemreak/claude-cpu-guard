@@ -15,8 +15,17 @@ Claude Code's TUI runs a React scene graph at 60fps — layout, rasterize, diff,
 
 ## Install
 
+In Claude Code, run:
+
+```
+/plugin marketplace add yemreak/claude-cpu-guard
+/plugin install claude-cpu-guard@claude-cpu-guard
+```
+
+Or clone manually:
+
 ```bash
-claude /install-plugin github:yemreak/claude-cpu-guard
+git clone https://github.com/yemreak/claude-cpu-guard ~/.claude/plugins/claude-cpu-guard
 ```
 
 That's it. No config needed. **macOS only** for now — Linux and Windows contributions welcome.
@@ -35,8 +44,14 @@ Kill only happens when **all 6 checks** (every 5s for 30s) show CPU > 80% while 
 
 ## Uninstall
 
+```
+/plugin uninstall claude-cpu-guard@claude-cpu-guard
+```
+
+Or remove manually:
+
 ```bash
-claude /uninstall-plugin claude-cpu-guard
+rm -rf ~/.claude/plugins/claude-cpu-guard
 ```
 
 ## License
