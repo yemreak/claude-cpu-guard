@@ -70,7 +70,7 @@ case "$event" in
       kill -0 "$claude_pid" 2>/dev/null && kill -9 "$claude_pid" 2>/dev/null
       sleep 1
       printf "%s" "cd '${escaped_cwd}' && claude --resume ${cached_session}" > "/dev/$tty_name"
-    ) &
+    ) </dev/null >/dev/null 2>&1 &
     disown
     ;;
 esac
