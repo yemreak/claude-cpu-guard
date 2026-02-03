@@ -34,7 +34,7 @@ case "$event" in
   Stop)
     echo "stopped" > "$CACHE_DIR/$tty_name.state"
 
-    nohup bash -c '
+    perl -MPOSIX -e 'fork and exit; POSIX::setsid(); exec @ARGV' -- bash -c '
       CACHE_DIR="$1"; tty_name="$2"; WATCH_INTERVAL="$3"; CPU_THRESHOLD="$4"
       checks=$(($5 / WATCH_INTERVAL))
       high_count=0
@@ -71,6 +71,6 @@ case "$event" in
       kill -0 "$claude_pid" 2>/dev/null && kill -9 "$claude_pid" 2>/dev/null
       sleep 1
       printf "%s" "cd '"'"'${escaped_cwd}'"'"' && claude --resume ${cached_session}" > "/dev/$tty_name"
-    ' _ "$CACHE_DIR" "$tty_name" "$WATCH_INTERVAL" "$CPU_THRESHOLD" "$WATCH_DURATION" </dev/null >/dev/null 2>&1 &
+    ' _ "$CACHE_DIR" "$tty_name" "$WATCH_INTERVAL" "$CPU_THRESHOLD" "$WATCH_DURATION" </dev/null >/dev/null 2>&1
     ;;
 esac
