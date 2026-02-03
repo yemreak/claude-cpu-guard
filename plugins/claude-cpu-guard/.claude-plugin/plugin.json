@@ -1,0 +1,8 @@
+{
+  "name": "claude-cpu-guard",
+  "description": "Auto-kills stuck Claude Code processes when CPU stays above 80% after stopping. Fixes the React/Ink render loop bug.",
+  "author": {
+    "name": "yemreak",
+    "url": "https://github.com/yemreak"
+  }
+}

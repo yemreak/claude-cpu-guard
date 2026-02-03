@@ -15,7 +15,7 @@
         "name": "yemreak",
         "url": "https://github.com/yemreak"
       },
-      "source": ".",
+      "source": "./plugins/claude-cpu-guard",
       "category": "productivity",
       "homepage": "https://github.com/yemreak/claude-cpu-guard"
     }
