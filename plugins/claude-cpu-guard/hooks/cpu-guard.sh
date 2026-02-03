@@ -34,8 +34,9 @@ case "$event" in
   Stop)
     echo "stopped" > "$CACHE_DIR/$tty_name.state"
 
-    (
-      checks=$((WATCH_DURATION / WATCH_INTERVAL))
+    nohup bash -c '
+      CACHE_DIR="$1"; tty_name="$2"; WATCH_INTERVAL="$3"; CPU_THRESHOLD="$4"
+      checks=$(($5 / WATCH_INTERVAL))
       high_count=0
 
       for ((i=0; i<checks; i++)); do
@@ -44,7 +45,7 @@ case "$event" in
         current_state=$(cat "$CACHE_DIR/$tty_name.state" 2>/dev/null)
         [ "$current_state" != "stopped" ] && exit 0
 
-        claude_pid=$(ps -t "$tty_name" -o pid=,comm= 2>/dev/null | grep claude | head -1 | awk '{print $1}')
+        claude_pid=$(ps -t "$tty_name" -o pid=,comm= 2>/dev/null | grep claude | head -1 | awk "{print \$1}")
         [ -z "$claude_pid" ] && exit 0
 
         cpu=$(ps -p "$claude_pid" -o %cpu= 2>/dev/null | xargs)
@@ -58,19 +59,18 @@ case "$event" in
       [ "$high_count" -lt "$checks" ] && exit 0
 
       cached_session=$(cat "$CACHE_DIR/$tty_name" 2>/dev/null)
-      claude_pid=$(ps -t "$tty_name" -o pid=,comm= 2>/dev/null | grep claude | head -1 | awk '{print $1}')
-      cwd=$(lsof -p "$claude_pid" -Fn 2>/dev/null | awk '/^fcwd/{getline; print substr($0,2)}')
+      claude_pid=$(ps -t "$tty_name" -o pid=,comm= 2>/dev/null | grep claude | head -1 | awk "{print \$1}")
+      cwd=$(lsof -p "$claude_pid" -Fn 2>/dev/null | awk "/^fcwd/{getline; print substr(\$0,2)}")
       [ -z "$cached_session" ] && exit 0
       [ -z "$claude_pid" ] && exit 0
       [ -z "$cwd" ] && exit 0
 
-      escaped_cwd=$(printf '%s' "$cwd" | sed "s/'/'\\\\''/g")
+      escaped_cwd=$(printf "%s" "$cwd" | sed "s/'"'"'/'"'"'\\\\'"'"''"'"'/g")
       kill "$claude_pid" 2>/dev/null
       sleep 1
       kill -0 "$claude_pid" 2>/dev/null && kill -9 "$claude_pid" 2>/dev/null
       sleep 1
-      printf "%s" "cd '${escaped_cwd}' && claude --resume ${cached_session}" > "/dev/$tty_name"
-    ) </dev/null >/dev/null 2>&1 &
-    disown
+      printf "%s" "cd '"'"'${escaped_cwd}'"'"' && claude --resume ${cached_session}" > "/dev/$tty_name"
+    ' _ "$CACHE_DIR" "$tty_name" "$WATCH_INTERVAL" "$CPU_THRESHOLD" "$WATCH_DURATION" </dev/null >/dev/null 2>&1 &
     ;;
 esac
