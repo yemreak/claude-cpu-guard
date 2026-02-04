@@ -40,6 +40,9 @@ case "$event" in
       while true; do
         sleep "$WATCH_INTERVAL"
 
+        # TTY gone (terminal closed) → self-terminate
+        [ ! -e "/dev/$tty_name" ] && rm -f "$CACHE_DIR/$tty_name" "$CACHE_DIR/$tty_name.state" "$CACHE_DIR/$tty_name.watcher" && exit 0
+
         current_state=$(cat "$CACHE_DIR/$tty_name.state" 2>/dev/null)
         [ "$current_state" != "stopped" ] && continue
 
