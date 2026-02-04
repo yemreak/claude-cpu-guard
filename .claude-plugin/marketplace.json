@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-cpu-guard",
-  "description": "Auto-kills stuck Claude Code processes when CPU stays above 80% after stopping",
+  "description": "Auto-kills stuck Claude Code processes when CPU stays above 70% after stopping",
   "owner": {
     "name": "yemreak",
     "url": "https://github.com/yemreak"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "claude-cpu-guard",
-      "description": "Auto-kills stuck Claude Code processes when CPU stays above 80% after stopping. Fixes the React/Ink render loop bug.",
+      "description": "Auto-kills stuck Claude Code processes when CPU stays above 70% after stopping. Fixes the React/Ink render loop bug.",
       "version": "1.0.0",
       "author": {
         "name": "yemreak",

@@ -40,7 +40,7 @@ Three hooks, one script, zero config:
 | `UserPromptSubmit` | Marks state as "working" (won't kill) |
 | `Stop` | Marks state as "stopped" → starts 30s CPU watch |
 
-Kill only happens when **all 6 checks** (every 5s for 30s) show CPU > 80% while state is "stopped". If you type anything during that window, the kill is cancelled.
+Kill only happens when **all 6 checks** (every 5s for 30s) show CPU > 70% while state is "stopped". If you type anything during that window, the kill is cancelled.
 
 ## Uninstall
 

@@ -11,7 +11,7 @@
 #   state file mtime stale (>STALE_TIMEOUT) + CPU high → crash, kill
 
 CACHE_DIR="$HOME/.cache/claude-cpu-guard"
-CPU_THRESHOLD=80
+CPU_THRESHOLD=70
 WATCH_DURATION=30
 WATCH_INTERVAL=5
 STALE_TIMEOUT=120
